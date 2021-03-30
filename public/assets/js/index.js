@@ -36,7 +36,7 @@ const deleteNote = (id) => {
 const renderActiveNote = () => {
   $saveNoteBtn.hide();
 
-  if (activeNote.id === "number") {
+  if (activeNote.id) {
     $noteTitle.attr("readonly", true);
     $noteText.attr("readonly", true);
     $noteTitle.val(activeNote.title);
@@ -67,7 +67,11 @@ const handleNoteDelete = function (event) {
   // prevents the click listener for the list from being called when the button inside of it is clicked
   event.stopPropagation();
 
-  const note = $(this).data(id);
+  const note = $(this)
+    .parent(".list-group-item")
+    .data();
+
+
 
   if (activeNote.id === note.id) {
     activeNote = {};
@@ -81,7 +85,7 @@ const handleNoteDelete = function (event) {
 
 // Sets the activeNote and displays it
 const handleNoteView = function () {
-  activeNote = $(this).data();
+  activeNote = {$(this).data();}
   renderActiveNote();
 };
 
