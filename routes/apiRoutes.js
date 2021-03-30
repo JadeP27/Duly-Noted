@@ -1,27 +1,30 @@
-const tableData = require("../db/db.json");
-const fs = require('fs');
-const path = require('path');
+const fs = require('fs')
+let tableData = require('../db/db.json')
+
+function noteIds() {
+  tableData.forEach((newNote, i) => {
+    newNote.id = i++;
+  })
+}
 
 module.exports = function(app) {
-  fs.readFile("db/db.json","utf8", (err, data) => {
-
-    if (err) throw err;
-
-    var notes = JSON.parse(data);
-  // API GET Requests
-  // Below code handles when users "visit" a page.
-  // ---------------------------------------------------------------------------
-    app.get("/api/tables", function(req, res) {
+  
+  fs.readFile('db/db.json', JSON.stringify(tableData))
     res.json(tableData);
+  
+    // API GET Requests
+    app.get('/api/notes', function(req, res) {
+    res.json(tableData)
     });
-  // API POST Requests
-  // Below code handles when a user submits a form and thus submits data to the server.
-  // In each of the below cases, when a user submits form data (a JSON object)
-  // ...the JSON is pushed to the appropriate JavaScript array
-  // (ex. User fills out a reservation request... this data is then sent to the server...
-  // Then the server saves the data to the tableData array)
-  // ---------------------------------------------------------------------------
-    app.post("/api/Notes", function(req, res) {
+  
+    // API POST Requests
+    app.post('/api/notes', function(req, res) {
+      const newNote = req.body;
+      tableData.push(newNote);
+      noteIds()
+      fs.writeFileSync('./db/db.json', JSON.stringify(tableData))
+      res.json(tableData)
+    });
     // Note the code here. Our "server" will respond to requests and let users know if they have a table or not.
     // It will do this by sending out the value "true" have a table
     // req.body is available since we're using the body parsing middleware
@@ -33,13 +36,19 @@ module.exports = function(app) {
         waitListData.push(req.body);
         res.json(false);
       }
-    });
-    app.delete("/api/notes/id", function(req, res) {
-      // Empty out the arrays of data
-      tableData.length = 0;
-      waitListData.length = 0;
-
-      res.json({ ok: true });
-    });
-  })
+    app.delete('/api/notes/:id', function(req, res) {
+      const noteNum = req.params.id
+      for (var i = 0; i < tableData.length; i++) {
+      if (tableData[i].id == noteNum) {
+        // Empty out the arrays of data
+        tableData.length = 0;
+        waitListData.length = 0;
+        res.json({ ok: true });
+        console.log("Deleted note with id "+req.params.id);
+        noteIds()
+        }
+      }
+      fs.writeFileSync('./db/db.json', JSON.stringify(tableData))
+      res.json(tableData)
+    }); 
 }
