@@ -1,10 +1,10 @@
-# uwu
+# Duly Noted
 
 ## Table of Contents
     > Description
     > Technologies
+    > Usage Instructions
     > Deployment
-      [How to use]
     > Screenshots
 
 ### Description
@@ -17,13 +17,12 @@ SO THAT I can organize my thoughts and keep track of tasks I need to complete
 ### Technologies
 - Bootstrap for CSS Framework
 - Express
-- JQuery
-- Deployment: Github pages
+- JQuery 
+
+### Usage Instructions
 
 ### Deployment
 
 [Deployed application]()
-
-How to use: 
 
 ### Screenshots
