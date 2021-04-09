@@ -26,7 +26,7 @@ SO THAT I can organize my thoughts and keep track of tasks I need to complete
 
 ### Deployment
 
-[Deployed application]()
+[Deployed application](https://duly-noted11.herokuapp.com/)
 
 ### Screenshots
 
